@@ -2,9 +2,28 @@
   "name": "@local/dsh-telegram-bridge",
   "version": "0.1.0",
   "private": true,
-  "description": "DeepSeek Harness 插件：通过一个 Telegram bot 让用户在 Telegram 里使用 Harness Agent；含配置页可填 bot ID/token 并开关。",
+  "description": "DeepSeek Harness plugin: bind a Telegram bot so you can use the Harness Agent (with tools) from Telegram; includes a settings page.",
   "type": "module",
   "main": "lib/host.js",
+  "license": "MIT",
+  "author": "Narkco <narkco@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/narkco-kang/dsh-telegram-bridge.git"
+  },
+  "homepage": "https://github.com/narkco-kang/dsh-telegram-bridge#readme",
+  "bugs": {
+    "url": "https://github.com/narkco-kang/dsh-telegram-bridge/issues"
+  },
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "telegram",
+    "bridge",
+    "plugin",
+    "agent"
+  ],
   "dependencies": {
     "@deepseek-ai/schemastery": "*"
   }
