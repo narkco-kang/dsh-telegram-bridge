@@ -1,0 +1,42 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate package.json (must be valid JSON)
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('package.json','utf8')); console.log('package.json OK')"
+
+      - name: Check required files exist
+        run: |
+          for f in lib/host.js lib/client.js README.md LICENSE install-web-profile.ps1 restart-dsh-web.ps1; do
+            [ -f "$f" ] && echo "OK $f" || { echo "MISSING $f"; exit 1; }
+          done
+
+      - name: Validate JS syntax (node --check, treated as ESM because package.json has type=module)
+        run: |
+          node --check lib/host.js
+          node --check lib/client.js
+          echo "JS syntax OK"
+
+      - name: Validate PowerShell syntax
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $files = Get-ChildItem -File -Filter '*.ps1'
+          if (-not $files) { Write-Host 'no .ps1 files'; exit 0 }
+          foreach ($f in $files) {
+            $errs = $null; $toks = $null
+            [Management.Automation.Language.Parser]::ParseFile($f.FullName, [ref]$toks, [ref]$errs) | Out-Null
+            if ($errs -and $errs.Count -gt 0) {
+              throw ('PowerShell syntax error in ' + $f.Name + ': ' + ($errs[0].Message))
+            }
+            Write-Host ('OK ' + $f.Name)
+          }
