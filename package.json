@@ -5,6 +5,15 @@
   "description": "DeepSeek Harness plugin: bind a Telegram bot so you can use the Harness Agent (with tools) from Telegram; includes a settings page.",
   "type": "module",
   "main": "lib/host.js",
+  "exports": {
+    ".": {
+      "default": "./lib/host.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
   "license": "MIT",
   "author": "Narkco <narkco@gmail.com>",
   "repository": {
@@ -24,6 +33,18 @@
     "plugin",
     "agent"
   ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
   "dependencies": {
     "@deepseek-ai/schemastery": "*"
   }

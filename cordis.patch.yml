@@ -1,0 +1,7 @@
+# dsh-telegram-bridge bundle patch: 插件行
+- insert:
+    - id: telegram-bridge
+      name: '@local/dsh-telegram-bridge'
+      config:
+        bridgeDir: 'D:/dsh-telegram-full'
+        pyCommand: 'pythonw'
