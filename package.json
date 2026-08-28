@@ -2,7 +2,7 @@
   "name": "@local/dsh-telegram-bridge",
   "version": "0.1.0",
   "private": true,
-  "description": "DeepSeek Harness plugin (Host only): bind a Telegram bot so you can use the Harness Agent (with tools) from Telegram; configured via a config file (no browser page needed).",
+  "description": "DeepSeek Harness plugin (Host only): bind a Telegram bot so you can use the Harness Agent (with tools) from Telegram; configured via a config file (no browser page).",
   "type": "module",
   "main": "lib/host.js",
   "exports": {
@@ -36,10 +36,7 @@
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/schemastery": "^3.18.1"
+    "@deepseek-ai/cordis": "^4.0.1"
   },
-  "dependencies": {
-    "@deepseek-ai/schemastery": "*"
-  }
+  "dependencies": {}
 }
