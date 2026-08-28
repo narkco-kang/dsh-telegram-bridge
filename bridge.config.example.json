@@ -1,0 +1,8 @@
+﻿{
+  "enabled": true,
+  "botToken": "PASTE_YOUR_TELEGRAM_BOT_TOKEN",
+  "allowedUserIds": "YOUR_TELEGRAM_USER_ID",
+  "workdir": "",
+  "agentCmd": "npx --yes @deepseek-ai/dsh --profile headless",
+  "pollSeconds": 30
+}

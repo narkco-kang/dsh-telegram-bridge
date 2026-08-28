@@ -56,3 +56,12 @@ export function apply(ctx) {
     () => React.createElement(TelegramBridgePage, {}),
   ))
 }
+
+// Auto-register for dsh web
+if (window.__ModuleLoader__) {
+  window.__ModuleLoader__.load('@local/dsh-telegram-bridge', {
+    setup(ctx) {
+      apply(ctx);
+    }
+  });
+}
