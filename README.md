@@ -28,7 +28,7 @@
 
 - **Host 插件**（`lib/host.js`）：注册 `telegramBridge` 配置命名空间；按配置用 `subprocess` 启动/停止/重启 Python 桥；把 token / 允许ID / 工作目录通过**环境变量**注入给桥；监听 `settings/updated` 自动同步；暴露 `telegram-bridge:get/set/status` RPC。
 - **Client 插件**（`lib/client.js`）：在 `settings.section` 渲染配置页。
-- **Python 桥**：`D:\dsh-telegram-full`（一个独立项目，含 `bot.py` + `.env` + 依赖），接收 env 配置并运行 Agent。
+- **Python 桥**：`<你的桥项目目录>`（一个独立项目，含 `bot.py` + `.env` + 依赖），接收 env 配置并运行 Agent。
 
 ---
 
@@ -36,8 +36,11 @@
 
 - **DeepSeek Harness**（`dsh web`），且你能编辑其 profile 的 `cordis.patch.yml`。
 - **Node.js + npm**（`dsh` 已能调用 corepack/pnpm）。
-- **Python 3.8+** 与 `pythonw`；以及 **`D:\dsh-telegram-full`** 桥项目（含 `bot.py`、`.env`、`requirements` 依赖）。
+- **Python 3.8+** 与 `pythonw`；以及一个 **Python 桥项目**（含 `bot.py`、`.env`、`requirements` 依赖）。
+  插件通过 `config.bridgeDir` 指向它；本仓库**不含**该桥项目，请把你自己的桥项目路径填到 `bridgeDir`。
 - 一个 **Telegram bot**（@BotFather 创建）及它的 **bot token**；你的 Telegram **用户 ID**。
+
+> ❗ 重要：本插件是“壳”，负责按配置把桥拉起来；真正执行 Agent 的是那个 **Python 桥项目**。请先准备一个桥项目（可用配套的桥，或按本项目思路自建），并把它的目录填进 `config.bridgeDir`（默认值是示例，不是通用路径）。
 
 ---
 
@@ -47,19 +50,19 @@
 
 ```sh
 # 0)（可选，推荐）先一键备份 + 装 + 检查 + 重启
-powershell -ExecutionPolicy Bypass -File "D:\dsh-telegram-plugin\install-web-profile.ps1"
+powershell -ExecutionPolicy Bypass -File "<插件目录>\install-web-profile.ps1"
 
 # 或分步：
 # 1) 把本插件包装进 web profile（本地目录按 file: 处理）
-dsh plugin --profile web add D:\dsh-telegram-plugin
-#    或 dsh plugin --profile web add file:D:\dsh-telegram-plugin
+dsh plugin --profile web add <插件目录>
+#    或 dsh plugin --profile web add file:<插件目录>
 
 # 2) 在组合里加一行（编辑 $DSH_HOME\profiles\web\cordis.patch.yml）
 #    - insert:
 #        - id: telegram-bridge
 #          name: '@local/dsh-telegram-bridge'
 #          config:
-#            bridgeDir: 'D:/dsh-telegram-full'
+#            bridgeDir: '<你的桥项目目录>'
 #            pyCommand: 'pythonw'
 
 # 3) 确认依赖已进 package.json（install script 会自动检查）
@@ -100,7 +103,7 @@ dsh plugin --profile web add D:\dsh-telegram-plugin
 
 | 字段 | 默认 | 说明 |
 | --- | --- | --- |
-| `bridgeDir` | `D:/dsh-telegram-full` | Python 桥项目目录（可改） |
+| `bridgeDir` | `<你的桥项目目录>` | Python 桥项目目录（可改） |
 | `pyCommand` | `pythonw` | Python 解释器（可改） |
 
 ---
@@ -124,7 +127,7 @@ dsh-telegram-plugin/
 
 - **配置页没出现**：包没装成功或包名/`cordis.patch.yml` 的 `name:` 对不上；确认 `profiles\web\package.json` 的依赖里有 `@local/dsh-telegram-bridge`，且 `cordis.patch.yml` 的 `name:` 与它一致。
 - **装包报 `spawn powershell.exe ENOENT`**：这是受限环境的进程限制，换到正常 Windows 机器执行。
-- **bot 没回应**：确认已启用 + token 正确 + `allowedUserIds` 含你的 ID；看桥日志（`D:\dsh-telegram-full\bot.log`）与 `dsh-web-restart.log`。
+- **bot 没回应**：确认已启用 + token 正确 + `allowedUserIds` 含你的 ID；看桥日志（`<你的桥项目目录>\bot.log`）与 `dsh-web-restart.log`。
 - **Agent 工具不执行**：`dsh --profile headless` 需要能 spawn；在正常机器上运行。
 
 ---
@@ -133,7 +136,7 @@ dsh-telegram-plugin/
 
 - **`allowedUserIds` 一定要只填你自己**，否则他人能消耗你的模型额度。
 - token 是**脱敏**的（不受 `get` 回传），但会持久化在存储里；勿把 `.env`/存储提交到公开仓库。
-- 插件/桥的进程生命周期绑定宿主/会话：宿主停止会把桥一并终止；要长期常驻用 `D:\dsh-telegram-full\start.bat`。
+- 插件/桥的进程生命周期绑定宿主/会话：宿主停止会把桥一并终止；要长期常驻用 `<你的桥项目目录>\start.bat`。
 
 ---
 
