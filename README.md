@@ -1,5 +1,8 @@
 # dsh-telegram-bridge
 
+[![validate](https://github.com/narkco-kang/dsh-telegram-bridge/actions/workflows/validate.yml/badge.svg)](https://github.com/narkco-kang/dsh-telegram-bridge/actions/workflows/validate.yml)
+[![release](https://github.com/narkco-kang/dsh-telegram-bridge/actions/workflows/release.yml/badge.svg)](https://github.com/narkco-kang/dsh-telegram-bridge/actions/workflows/release.yml)
+
 在 **DeepSeek Harness** 里加一个 Telegram 桥：**绑定一个 Telegram bot**，让你在 Telegram 里用 **Harness Agent（带工具）** 对话。自带配置页，填 bot token + 允许的用户 ID + 开关即可。
 
 > 这是一个可安装的 Harness 插件包（Host + Client）。它通过子进程托管一个 Python 桥，复用 Harness Agent 的 headless/工具链路。
