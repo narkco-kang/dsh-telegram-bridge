@@ -1,0 +1,11 @@
+{
+  "name": "@local/dsh-telegram-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DeepSeek Harness 插件：通过一个 Telegram bot 让用户在 Telegram 里使用 Harness Agent；含配置页可填 bot ID/token 并开关。",
+  "type": "module",
+  "main": "lib/host.js",
+  "dependencies": {
+    "@deepseek-ai/schemastery": "*"
+  }
+}
